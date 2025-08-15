@@ -1,1 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Screener</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: black;
+            height: 100vh;
+            overflow: hidden;
+        }
+        iframe {
+            width: 100vw;
+            height: 100vh;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <iframe id="videoFrame" 
+            src="https://www.youtube.com/embed/5p5divflc_g?autoplay=1&mute=0&controls=0&showinfo=0&fs=1&modestbranding=1&loop=1&playlist=5p5divflc_g" 
+            allow="autoplay; fullscreen" 
+            allowfullscreen>
+    </iframe>
+
+    <script>
+        var player;
+        var playCount = 0;
+
+        // Cuando la API de YouTube esté lista
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('videoFrame', {
+                events: {
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        // Controla cuando el video cambia de estado
+        function onPlayerStateChange(event) {
+            // Si el video ha terminado (estado 0)
+            if (event.data === YT.PlayerState.ENDED) {
+                playCount++;
+                if (playCount >= 4) {
+                    player.stopVideo(); // Detener el video después de 4 repeticiones
+                } else {
+                    player.playVideo(); // Reproducir el video de nuevo
+                }
+            }
+        }
+
+        // Cargar la API de YouTube
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    </script>
+</body>
+</html>
+
 
